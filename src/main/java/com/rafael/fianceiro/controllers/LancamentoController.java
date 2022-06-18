@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rafael.fianceiro.event.RecursoCriadoEvent;
 import com.rafael.fianceiro.model.Lancamento;
 import com.rafael.fianceiro.model.repositories.LancamentoRepository;
+import com.rafael.fianceiro.model.repositories.filters.LancamentoFilter;
 import com.rafael.fianceiro.service.LancamentoService;
 
 @RestController
@@ -42,8 +43,8 @@ public class LancamentoController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Lancamento>> listaLancamento() {
-		List<Lancamento> lancamentos = lancamentoRepository.findAll();
+	public ResponseEntity<List<Lancamento>> pesquisar(LancamentoFilter lancamentoFilter) {
+		List<Lancamento> lancamentos = lancamentoRepository.filtrar(lancamentoFilter);
 		return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
 	}
 	
