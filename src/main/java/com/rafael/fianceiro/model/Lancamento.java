@@ -35,7 +35,7 @@ public class Lancamento implements Serializable{
 	@NotNull
 	@Column(name = "data_vencimento")
 	@JsonFormat(pattern =  "dd/MM/yyyy")
-	private LocalDate dataVenncimento;
+	private LocalDate dataVencimento;
 	
 	@Column(name = "data_pagamento ")
 	@JsonFormat(pattern =  "dd/MM/yyyy")
@@ -76,12 +76,12 @@ public class Lancamento implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public LocalDate getDataVenncimento() {
-		return dataVenncimento;
+	public LocalDate getDataVencimento() {
+		return dataVencimento;
 	}
 
-	public void setDataVenncimento(LocalDate dataVenncimento) {
-		this.dataVenncimento = dataVenncimento;
+	public void setDataVencimento(LocalDate dataVencimento) {
+		this.dataVencimento = dataVencimento;
 	}
 
 	public LocalDate getDataPagamento() {
