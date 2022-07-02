@@ -14,45 +14,46 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+
+
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-	
     @Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
     	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-						.withClient("angular")
-						.secret("$2a$10$UAc049fUm6Bxy8X/.mpn8.PfD2ncb4ZgvmEa5Hb.JOGVJNX1ampgG") // @ngul@r0
-						.scopes("read", "write")
-						.authorizedGrantTypes("password", "refresh_token")
-						.accessTokenValiditySeconds(1800)
-						.refreshTokenValiditySeconds(3600 * 24)
-					.and()
-						.withClient("mobile")
-						.secret(passwordEncoder.encode("m0b1le")) // Forma insegura
-						.scopes("read")
-						.authorizedGrantTypes("password", "refresh_token")
-						.accessTokenValiditySeconds(1800)
-						.refreshTokenValiditySeconds(3600 * 24);
+				.withClient("angular")
+				.secret("$2a$10$UAc049fUm6Bxy8X/.mpn8.PfD2ncb4ZgvmEa5Hb.JOGVJNX1ampgG") // @ngul@r0
+				.scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24)
+			.and()
+				.withClient("mobile")
+				.secret(passwordEncoder.encode("m0b1le")) // Forma insegura
+				.scopes("read")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
-			.authenticationManager(this.authenticationManager)
-			.accessTokenConverter(this.accessTokenConverter())
+			.authenticationManager(authenticationManager)
+			.userDetailsService(userDetailsService)
+			.accessTokenConverter(accessTokenConverter())
 			.tokenStore(tokenStore())
-			.userDetailsService(this.userDetailsService)
 			.reuseRefreshTokens(false);
 	}
 
@@ -69,6 +70,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
-
 
 }

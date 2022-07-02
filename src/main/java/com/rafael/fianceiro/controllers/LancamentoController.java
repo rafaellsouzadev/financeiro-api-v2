@@ -25,6 +25,7 @@ import com.rafael.fianceiro.event.RecursoCriadoEvent;
 import com.rafael.fianceiro.model.Lancamento;
 import com.rafael.fianceiro.model.repositories.LancamentoRepository;
 import com.rafael.fianceiro.model.repositories.filters.LancamentoFilter;
+import com.rafael.fianceiro.model.repositories.projection.ResumoLancamento;
 import com.rafael.fianceiro.service.LancamentoService;
 
 @RestController
@@ -52,6 +53,13 @@ public class LancamentoController {
 	public ResponseEntity<Page<Lancamento>> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		Page<Lancamento> lancamentos = lancamentoRepository.filtrar(lancamentoFilter, pageable);
 		return ResponseEntity.status(HttpStatus.OK).body(lancamentos);
+	}
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and hasAuthority('SCOPE_read')")
+	public ResponseEntity<Page<ResumoLancamento>> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		Page<ResumoLancamento> lancamentosResumir = lancamentoRepository.resumir(lancamentoFilter, pageable);
+		return ResponseEntity.status(HttpStatus.OK).body(lancamentosResumir);
 	}
 	
 	@PostMapping
